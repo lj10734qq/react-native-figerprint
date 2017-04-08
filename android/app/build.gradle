@@ -1,0 +1,41 @@
+apply plugin: 'com.android.library'
+import groovy.json.JsonSlurper
+
+def computeVersionName() {
+    // dynamically retrieve version from package.json
+    def slurper = new JsonSlurper()
+    def json = slurper.parse(file('../../package.json'), "utf-8")
+    return json.version
+}
+
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 1
+        versionName computeVersionName()
+    }
+    sourceSets.main {
+        jniLibs.srcDirs = ['libs']
+    }
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "com.facebook.react:react-native:+"
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile 'com.facebook.react:react-native:+'
+
+}
